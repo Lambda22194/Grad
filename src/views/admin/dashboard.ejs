@@ -1,0 +1,45 @@
+<%- include("../partials/header", { title: "Admin Dashboard" }) %>
+<h1 class="mt-3">Admin Dashboard</h1>
+
+<div class="row mt-3">
+  <div class="col-md-3"><div class="card"><div class="card-body"><div class="text-muted">Students</div><div class="fs-3"><%= stats.students %></div></div></div></div>
+  <div class="col-md-3"><div class="card"><div class="card-body"><div class="text-muted">Employers</div><div class="fs-3"><%= stats.employers %></div></div></div></div>
+  <div class="col-md-3"><div class="card"><div class="card-body"><div class="text-muted">Jobs</div><div class="fs-3"><%= stats.jobs %></div></div></div></div>
+  <div class="col-md-3"><div class="card"><div class="card-body"><div class="text-muted">Applications</div><div class="fs-3"><%= stats.applications %></div></div></div></div>
+</div>
+
+<h4 class="mt-4">Pending Employer Verifications</h4>
+<table class="table table-striped mt-2">
+  <thead>
+    <tr>
+      <th>Company</th>
+      <th>Contact</th>
+      <th>Email</th>
+      <th>Website</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% pending.forEach(p => { %>
+      <tr>
+        <td><%= p.company_name %></td>
+        <td><%= p.contact_name %></td>
+        <td><%= p.email %></td>
+        <td><%= p.website || '-' %></td>
+        <td>
+          <form method="post" action="/admin/employers/<%= p.user_id %>/verify?_method=PUT" class="d-inline">
+            <button class="btn btn-sm btn-success">Verify</button>
+          </form>
+          <form method="post" action="/admin/employers/<%= p.user_id %>/reject?_method=PUT" class="d-inline">
+            <button class="btn btn-sm btn-outline-danger">Reject</button>
+          </form>
+        </td>
+      </tr>
+    <% }) %>
+    <% if (!pending.length) { %>
+      <tr><td colspan="5" class="text-muted">No pending employers.</td></tr>
+    <% } %>
+  </tbody>
+</table>
+
+<%- include("../partials/footer") %>

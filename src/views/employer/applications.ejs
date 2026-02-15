@@ -1,0 +1,57 @@
+<%- include("../partials/header", { title: "Applications" }) %>
+<h1 class="mt-3">Applications — <%= job.title %></h1>
+
+<table class="table table-striped mt-3">
+  <thead>
+    <tr>
+      <th>Candidate</th>
+      <th>Education</th>
+      <th>Skills</th>
+      <th>CV</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% apps.forEach(a => { %>
+      <tr>
+        <td><%= a.full_name %></td>
+        <td><%= (a.university || '-') %><br/><small class="text-muted"><%= a.major || '' %></small></td>
+        <td><small><%= a.skills || '-' %></small></td>
+        <td>
+          <% if (a.cv_file_path) { %>
+            <a href="<%= a.cv_file_path %>" target="_blank">View</a>
+          <% } else { %>
+            <span class="text-muted">—</span>
+          <% } %>
+        </td>
+        <td><span class="badge text-bg-info text-dark"><%= a.status %></span></td>
+        <td>
+          <% if (a.status === 'submitted') { %>
+            <form method="post" action="/employer/applications/<%= a.id %>/status?_method=PUT" class="d-inline">
+              <input type="hidden" name="status" value="shortlisted"/>
+              <button class="btn btn-sm btn-outline-primary">Shortlist</button>
+            </form>
+            <form method="post" action="/employer/applications/<%= a.id %>/status?_method=PUT" class="d-inline">
+              <input type="hidden" name="status" value="rejected"/>
+              <button class="btn btn-sm btn-outline-danger">Reject</button>
+            </form>
+          <% } else if (a.status === 'shortlisted') { %>
+            <form method="post" action="/employer/applications/<%= a.id %>/status?_method=PUT" class="d-inline">
+              <input type="hidden" name="status" value="accepted"/>
+              <button class="btn btn-sm btn-success">Accept</button>
+            </form>
+            <form method="post" action="/employer/applications/<%= a.id %>/status?_method=PUT" class="d-inline">
+              <input type="hidden" name="status" value="rejected"/>
+              <button class="btn btn-sm btn-outline-danger">Reject</button>
+            </form>
+          <% } else { %>
+            <span class="text-muted">No actions</span>
+          <% } %>
+        </td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
+
+<%- include("../partials/footer") %>

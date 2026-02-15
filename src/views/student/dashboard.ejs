@@ -1,0 +1,49 @@
+<%- include("../partials/header", { title: "Student Dashboard" }) %>
+<h1 class="mt-3">Student Dashboard</h1>
+
+<div class="row mt-3">
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Profile</h5>
+        <p class="mb-1"><strong><%= profile.full_name || '—' %></strong></p>
+        <p class="text-muted mb-2"><%= profile.university || '' %> <%= profile.major ? '— ' + profile.major : '' %></p>
+        <p class="mb-2"><small class="text-muted">Skills: <%= profile.skills || '—' %></small></p>
+        <a class="btn btn-sm btn-outline-primary" href="/student/profile">Edit Profile</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+    <h5>Recommended for you</h5>
+    <div class="list-group">
+      <% recs.forEach(j => { %>
+        <a class="list-group-item list-group-item-action" href="/jobs/<%= j.id %>">
+          <div class="d-flex justify-content-between">
+            <strong><%= j.title %></strong>
+            <span class="badge text-bg-secondary"><%= j.type %></span>
+          </div>
+          <div class="text-muted"><%= j.company_name %> — <%= j.location %></div>
+          <small class="text-muted">Tags: <%= j.tags || '-' %></small>
+        </a>
+      <% }) %>
+    </div>
+
+    <h5 class="mt-4">Recent applications</h5>
+    <div class="list-group">
+      <% apps.forEach(a => { %>
+        <div class="list-group-item">
+          <div class="d-flex justify-content-between">
+            <strong><%= a.title %></strong>
+            <span class="badge text-bg-info text-dark"><%= a.status %></span>
+          </div>
+          <div class="text-muted"><%= a.company_name %></div>
+        </div>
+      <% }) %>
+      <% if (!apps.length) { %><div class="text-muted">No applications yet.</div><% } %>
+    </div>
+    <a class="btn btn-sm btn-outline-secondary mt-2" href="/student/applications">View all</a>
+  </div>
+</div>
+
+<%- include("../partials/footer") %>

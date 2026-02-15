@@ -1,0 +1,19 @@
+<%- include("../partials/header", { title: "Home" }) %>
+<div class="p-4 bg-light rounded">
+  <h1>Recruitment & Internship Platform</h1>
+  <p class="mb-0">A student-focused platform for jobs and internships (no job-fit score).</p>
+</div>
+
+<h3 class="mt-4">Latest Opportunities</h3>
+<div class="list-group">
+  <% jobs.forEach(j => { %>
+    <a class="list-group-item list-group-item-action" href="/jobs/<%= j.id %>">
+      <div class="d-flex justify-content-between">
+        <strong><%= j.title %></strong>
+        <span class="badge text-bg-secondary"><%= j.type %></span>
+      </div>
+      <div class="text-muted"><%= j.company_name %> — <%= j.location %></div>
+    </a>
+  <% }) %>
+</div>
+<%- include("../partials/footer") %>
